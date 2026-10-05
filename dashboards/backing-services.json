@@ -61,7 +61,7 @@
                        "targets":  [
                                        {
                                            "refId":  "A",
-                                           "expr":  "pg_stat_activity_count{env=~\"$env\"}"
+                                           "expr":  "pg_stat_activity_count{server=~\".*$env.*\"}"
                                        }
                                    ],
                        "fieldConfig":  {
@@ -90,7 +90,7 @@
                        "targets":  [
                                        {
                                            "refId":  "A",
-                                           "expr":  "sum by (datname) (rate(pg_stat_database_xact_commit{env=~\"$env\"}[5m]) + rate(pg_stat_database_xact_rollback{env=~\"$env\"}[5m]))"
+                                           "expr":  "sum by (datname) (rate(pg_stat_database_xact_commit{server=~\".*$env.*\"}[5m]) + rate(pg_stat_database_xact_rollback{server=~\".*$env.*\"}[5m]))"
                                        }
                                    ],
                        "fieldConfig":  {
@@ -119,7 +119,7 @@
                        "targets":  [
                                        {
                                            "refId":  "A",
-                                           "expr":  "pg_stat_activity_max_tx_duration{env=~\"$env\"}"
+                                           "expr":  "pg_stat_activity_max_tx_duration{server=~\".*$env.*\"}"
                                        }
                                    ],
                        "fieldConfig":  {
@@ -148,7 +148,7 @@
                        "targets":  [
                                        {
                                            "refId":  "A",
-                                           "expr":  "pg_database_size_bytes{env=~\"$env\"}"
+                                           "expr":  "pg_database_size_bytes{server=~\".*$env.*\"}"
                                        }
                                    ],
                        "fieldConfig":  {
