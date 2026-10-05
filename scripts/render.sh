@@ -44,6 +44,16 @@ else
   exit 1
 fi
 
+echo "check legacy plan"
+if command -v python3 >/dev/null 2>&1; then
+  python3 "$ROOT/scripts/check-legacy-plan.py"
+elif command -v python >/dev/null 2>&1; then
+  python "$ROOT/scripts/check-legacy-plan.py"
+else
+  echo "python is required to check the legacy plan" >&2
+  exit 1
+fi
+
 echo "check dashboards"
 if command -v python3 >/dev/null 2>&1; then
   python3 "$ROOT/scripts/check-dashboards.py"
