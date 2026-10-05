@@ -1,0 +1,20 @@
+fullnameOverride: postgres-exporter
+
+config:
+  datasourceSecret:
+    name: postgres-exporter-dsn
+    key: dsn
+
+serviceMonitor:
+  enabled: true
+
+resources:
+  requests:
+    cpu: 20m
+    memory: 64Mi
+  limits:
+    cpu: 100m
+    memory: 128Mi
+
+networkPolicy:
+  enabled: false
