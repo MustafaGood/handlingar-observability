@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# Render T2 without a cluster. Fails if a chart or the manifest set is invalid.
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+HELM="${HELM:-helm}"
+
+render() {
+  local release="$1"
+  local chart="$2"
+  local version="$3"
+  local values="$4"
+  echo "render ${release} ${version}"
+  "$HELM" template "$release" "$chart" --version "$version" \
+    --namespace observability \
+    -f "$ROOT/$values" >/dev/null
+}
+
+render kube-prometheus-stack prometheus-community/kube-prometheus-stack 91.9.0 values-kube-prometheus-stack.yaml
+render loki grafana/loki 7.3.0 values-loki.yaml
+render alloy grafana/alloy 1.13.0 values-alloy.yaml
+render blackbox-exporter prometheus-community/prometheus-blackbox-exporter 11.19.1 values-blackbox-exporter.yaml
+render postgres-exporter prometheus-community/prometheus-postgres-exporter 8.2.0 values-postgres-exporter.yaml
+render redis-exporter prometheus-community/prometheus-redis-exporter 6.33.0 values-redis-exporter.yaml
+render memcached-exporter prometheus-community/prometheus-memcached-exporter 0.6.0 values-memcached-exporter.yaml
+
+echo "render manifests"
+rendered="$(kubectl kustomize "$ROOT")"
+for needle in "kind: IngressRoute" "kind: PrometheusRule" "grafana_dashboard" "kind: ExternalSecret"; do
+  case "$rendered" in
+    *"$needle"*) ;;
+    *) echo "missing ${needle}" >&2; exit 1 ;;
+  esac
+done
+echo "ok"

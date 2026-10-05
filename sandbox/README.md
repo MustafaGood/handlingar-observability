@@ -35,3 +35,7 @@ Commands required: `docker`, `k3d`, `kubectl`, `helm`, `cilium`.
 
 Blackbox probes use `sandbox/values-blackbox.yaml`, which points at the
 in-cluster Services instead of the public hostnames.
+
+The bootstrap script creates Secrets itself and skips the ExternalSecret
+manifests. Those templates are for the cluster that has the External Secrets
+operator.

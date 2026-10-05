@@ -152,6 +152,16 @@ helm upgrade --install memcached-exporter prometheus-community/prometheus-memcac
   -f "$ROOT/values-memcached-exporter.yaml" \
   --wait --timeout 10m
 
-kubectl apply -k "$ROOT"
+# Skip ExternalSecret. The sandbox creates those Secrets directly, and the
+# External Secrets operator is not installed here.
+kubectl kustomize "$ROOT" | awk '
+  function flush() {
+    if (buf != "" && buf !~ /kind: ExternalSecret/) printf "%s", buf
+  }
+  BEGIN { buf = "" }
+  /^---$/ { flush(); buf = $0 ORS; next }
+  { buf = buf $0 ORS }
+  END { flush() }
+' | kubectl apply -f -
 
 echo "Sandbox requested. Check: kubectl -n observability get pods"
