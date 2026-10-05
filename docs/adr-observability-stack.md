@@ -183,6 +183,14 @@ ceiling to aim at, not a measurement.
   (Hetzner Object Storage) is a later, optional task and is not required for
   this ADR.
 
+## Measurement
+
+The request table above is a budget. It is not a measurement. Live CPU,
+memory, and disk are recorded in `docs/resource-footprint.md`. On 2026-10-05
+the workstation container engine did not start, so no usage numbers exist yet.
+This ADR stays **proposed** until those numbers are filled in and the
+supervisor accepts the decision.
+
 ## Consequences
 
 - T2 may start only after the supervisor accepts this ADR, or accepts it with
