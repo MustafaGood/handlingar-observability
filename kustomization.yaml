@@ -9,6 +9,7 @@ resources:
   - manifests/externalsecret-grafana-admin.yaml
   - manifests/externalsecret-alert-email.yaml
   - manifests/servicemonitors.yaml
+  - alerts/rules.yaml
 configMapGenerator:
   - name: grafana-dashboard-overview
     files:
