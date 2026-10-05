@@ -9,3 +9,46 @@ resources:
   - manifests/externalsecret-grafana-admin.yaml
   - manifests/externalsecret-alert-email.yaml
   - manifests/servicemonitors.yaml
+configMapGenerator:
+  - name: grafana-dashboard-overview
+    files:
+      - overview.json=dashboards/overview.json
+    options:
+      labels:
+        grafana_dashboard: "1"
+      disableNameSuffixHash: true
+  - name: grafana-dashboard-alaveteli
+    files:
+      - alaveteli.json=dashboards/alaveteli.json
+    options:
+      labels:
+        grafana_dashboard: "1"
+      disableNameSuffixHash: true
+  - name: grafana-dashboard-backing-services
+    files:
+      - backing-services.json=dashboards/backing-services.json
+    options:
+      labels:
+        grafana_dashboard: "1"
+      disableNameSuffixHash: true
+  - name: grafana-dashboard-cluster
+    files:
+      - cluster.json=dashboards/cluster.json
+    options:
+      labels:
+        grafana_dashboard: "1"
+      disableNameSuffixHash: true
+  - name: grafana-dashboard-mail
+    files:
+      - mail.json=dashboards/mail.json
+    options:
+      labels:
+        grafana_dashboard: "1"
+      disableNameSuffixHash: true
+  - name: grafana-dashboard-logs
+    files:
+      - logs.json=dashboards/logs.json
+    options:
+      labels:
+        grafana_dashboard: "1"
+      disableNameSuffixHash: true
