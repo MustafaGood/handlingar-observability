@@ -10,7 +10,7 @@ spec:
     - name: handlingar.site
       rules:
         - alert: SiteDown
-          expr: probe_success == 0
+          expr: probe_success{env=~"handlingar|tst|qat"} == 0
           for: 3m
           labels:
             severity: critical
@@ -24,6 +24,8 @@ spec:
               /
               sum by (service) (rate(traefik_service_requests_total[5m]))
             ) > 0.05
+            and
+            sum by (service) (rate(traefik_service_requests_total[5m])) > 0
           for: 10m
           labels:
             severity: warning
@@ -34,13 +36,17 @@ spec:
       rules:
         - alert: SidekiqNotReady
           expr: |
-            kube_pod_status_ready{pod=~"alaveteli-sidekiq.*",condition="true"} == 0
+            kube_deployment_spec_replicas{deployment="alaveteli-sidekiq"} > 0
+            and
+            kube_deployment_status_replicas_available{deployment="alaveteli-sidekiq"}
+            <
+            kube_deployment_spec_replicas{deployment="alaveteli-sidekiq"}
           for: 5m
           labels:
             severity: critical
           annotations:
-            summary: Sidekiq pod is not Ready
-            description: Queue depth is not exported yet. This alert uses pod readiness.
+            summary: Sidekiq is not Ready
+            description: Queue depth is not exported yet. This alert uses desired replicas that are not available.
     - name: handlingar.certificates
       rules:
         - alert: CertificateExpiry
@@ -86,9 +92,9 @@ spec:
             description: pg_up has been 0 for 2 minutes.
         - alert: PostgresConnectionsHigh
           expr: |
-            sum by (instance) (pg_stat_activity_count)
+            sum by (server) (pg_stat_activity_count)
             /
-            sum by (instance) (pg_settings_max_connections)
+            sum by (server) (pg_settings_max_connections)
             > 0.9
           for: 10m
           labels:
@@ -100,7 +106,6 @@ spec:
       rules:
         - alert: PodCrashLoop
           expr: increase(kube_pod_container_status_restarts_total[15m]) > 3
-          for: 5m
           labels:
             severity: warning
           annotations:

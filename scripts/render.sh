@@ -24,6 +24,16 @@ render postgres-exporter prometheus-community/prometheus-postgres-exporter 8.2.0
 render redis-exporter prometheus-community/prometheus-redis-exporter 6.33.0 values-redis-exporter.yaml
 render memcached-exporter prometheus-community/prometheus-memcached-exporter 0.6.0 values-memcached-exporter.yaml
 
+echo "check alerts"
+if command -v python3 >/dev/null 2>&1; then
+  python3 "$ROOT/scripts/check-alerts.py"
+elif command -v python >/dev/null 2>&1; then
+  python "$ROOT/scripts/check-alerts.py"
+else
+  echo "python is required to check alerts" >&2
+  exit 1
+fi
+
 echo "check dashboards"
 if command -v python3 >/dev/null 2>&1; then
   python3 "$ROOT/scripts/check-dashboards.py"
