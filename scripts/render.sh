@@ -34,6 +34,16 @@ else
   exit 1
 fi
 
+echo "check runbook"
+if command -v python3 >/dev/null 2>&1; then
+  python3 "$ROOT/scripts/check-runbook.py"
+elif command -v python >/dev/null 2>&1; then
+  python "$ROOT/scripts/check-runbook.py"
+else
+  echo "python is required to check the runbook" >&2
+  exit 1
+fi
+
 echo "check dashboards"
 if command -v python3 >/dev/null 2>&1; then
   python3 "$ROOT/scripts/check-dashboards.py"
