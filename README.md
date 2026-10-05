@@ -11,9 +11,17 @@ email alerts. The supervisor copies this repository into
 | ADR | proposed, not accepted |
 | Measured CPU and memory | not measured |
 | Helm values and manifests | written, rendered with Helm, not installed |
+| Dashboards | six JSON files, not shown in a live Grafana |
+| Alerts | YAML rules, test mail not sent |
+| Runbook | written, not exercised on a live alert |
+| Legacy server plan | written, not a deployment |
 | Sandbox | scripted, not executed |
 
 Decision: [docs/adr-observability-stack.md](docs/adr-observability-stack.md)
+
+Runbook: [docs/runbook-troubleshooting.md](docs/runbook-troubleshooting.md)
+
+Legacy server plan: [docs/plan-legacy-prod.md](docs/plan-legacy-prod.md)
 
 ## Charts
 
